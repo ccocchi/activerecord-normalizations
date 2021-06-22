@@ -12,7 +12,7 @@ module ActiveRecord::Normalizations
     end
 
     def test_full_capitalize_option
-      n = TextTransformNormalizer.new(with: :full_capitalize)
+      n = TextTransformNormalizer.new(with: :word_capitalize)
       assert_equal "Jean-Eude", n.call(@str)
     end
 

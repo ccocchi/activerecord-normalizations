@@ -1,6 +1,6 @@
 module ActiveRecord::Normalizations
   class TextTransformNormalizer
-    VALID_TRANSFORMATIONS = [:capitalize, :full_capitalize, :uppercase, :lowercase]
+    VALID_TRANSFORMATIONS = [:capitalize, :word_capitalize, :uppercase, :lowercase]
 
     def initialize(options)
       @transformation = options[:with]
@@ -16,7 +16,7 @@ module ActiveRecord::Normalizations
         attr.upcase
       when :lowercase
         attr.downcase
-      when :full_capitalize
+      when :word_capitalize
         attr.gsub(/[[:alpha:]]+/, &:capitalize)
       else
         attr.capitalize

@@ -11,14 +11,14 @@ module ActiveRecord::Normalizations
     end
 
     def test_normalize_class_method
-      User.normalize :name, spaces: true
+      User.normalizes :name, spaces: true
 
       assert_equal 1, User._normalizers['name'].length
       assert User._normalizers['name'][0].is_a?(SpacesNormalizer)
     end
 
     def test_attribute_with_single_normalizer
-      User.normalize :name, spaces: true
+      User.normalizes :name, spaces: true
 
       record = User.new(name: " Bruce Wayne")
 
@@ -28,7 +28,7 @@ module ActiveRecord::Normalizations
     end
 
     def test_attribute_with_multiple_normalizers
-      User.normalize :name, spaces: true, text_transform: :full_capitalize
+      User.normalizes :name, spaces: true, text_transform: :word_capitalize
 
       record = User.new(name: " bruce WAYNE")
 
@@ -37,7 +37,7 @@ module ActiveRecord::Normalizations
     end
 
     def test_normalization_is_run_before_validations
-      User.normalize :name, spaces: :leading
+      User.normalizes :name, spaces: :leading
       User.validate ->(u) { errors.add(:name, "is wrong") if u.name.start_with?(' ') }
 
       record = User.new(name: " Bruce")
@@ -47,7 +47,7 @@ module ActiveRecord::Normalizations
     end
 
     def test_normalization_is_used_when_validation_is_skipped
-      User.normalize :name, spaces: true
+      User.normalizes :name, spaces: true
 
       record = User.new(name: " Bruce")
 

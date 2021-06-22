@@ -14,7 +14,7 @@ module ActiveRecord::Normalizations
     #
     #   normalize :firstname, spaces: true, text_transform: :capitalize
     #
-    def normalize(attr, **normalizations)
+    def normalizes(attr, **normalizations)
       attr_str = attr.to_s
 
       normalizations.each do |key, options|

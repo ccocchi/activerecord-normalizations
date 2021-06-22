@@ -1,38 +1,62 @@
 # ActiveRecord::Normalizations
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/activerecord/normalizations`. To experiment with that code, run `bin/console` for an interactive prompt.
+`ActiveRecord::Normalizations` gives you the possibility to transform, or normalize, your attributes before they are saved in your database. It behaves mostly like validations, applying normalizations in methods like `save` or `update` but being totally skipped when methods touching directly the database like `update_columns`.
 
-TODO: Delete this and the text above, and describe your gem
+## Compatibility
+
+### Ruby
+
+Currently supported Ruby versions: MRI 2.5, 2.6, 2.7, 3.0.
+JRuby hasn't been tested but since it's purely Ruby, it should work fine with it.
+
+### Rails
+
+Any version of ActiveRecord >= 4.2. It is tested against AR 5.2, 6.0, 6.1
 
 ## Installation
-
-Add this line to your application's Gemfile:
 
 ```ruby
 gem 'activerecord-normalizations'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install activerecord-normalizations
-
 ## Usage
 
-TODO: Write usage instructions here
+`ActiveRecord::Normalizations` is included in `ActiveRecord::Base` by default so you can directly use the `normalize` method in your models:
+
+```ruby
+class User
+  normalizes :firstname, spaces: true, text_transform: :capitalize
+end
+```
+
+The first argument is the attribute you want to normalize, and each subsequent option are the normalizers that are going to me applied to it, each with their option (much like ActiveRecord'd validations).
+
+## Normalizers
+
+The gem comes with the following normalizers:
+
+### Spaces
+
+Available mode: `:leading, :trailing, :both (default)`
+
+This normalizer removes leading, trailing or both spaces from your attribute. It uses Ruby's `strip` methods family under the hood.
+
+### TextTransform
+
+Available mode: `:capitalize, :lowercase, :uppercase, :word_capitalize`
+
+This normalizer transforms your string attribute per the given mode:
+
+* `capitalize`, `lowercase` and `uppercase` are pretty straight-forward and use Ruby's equivalent methods
+* `word_capitalize` will capitalize every word of a string, a word being 1 or more alpha characters. Useful when dealing with foreign names like `Jean-Michel` or `O'Connor`.
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/activerecord-normalizations. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ccocchi/activerecord-normalizations. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +64,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the ActiveRecord::Normalizations project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/activerecord-normalizations/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the ActiveRecord::Normalizations project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/ccocchi/activerecord-normalizations/blob/master/CODE_OF_CONDUCT.md).
