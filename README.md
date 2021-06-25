@@ -50,6 +50,35 @@ This normalizer transforms your string attribute per the given mode:
 * `capitalize`, `lowercase` and `uppercase` are pretty straight-forward and use Ruby's equivalent methods
 * `word_capitalize` will capitalize every word of a string, a word being 1 or more alpha characters. Useful when dealing with foreign names like `Jean-Michel` or `O'Connor`.
 
+## Custom Normalizer
+
+You can also define your own normalizers. They should be classes following the naming format `<option_name>Normalizer`, initialized with an options hash and responding to the `call` method with a single argument, the attribute to normalize.
+
+For example, if you wanted to reverse your attribute you could do create the following class
+
+```ruby
+# app/normalizers/reverse_normalizer.rb
+class ReverseNormalizer
+  def initialize(*args)
+  end
+
+  def call(attr)
+    attr.reverse
+  end
+end
+```
+
+then use it in your model like any other normalizer
+
+```ruby
+# app/models/user.rb
+class User < ApplicationRecord
+  normalizes :name, reverse: true
+end
+```
+
+You can check the [normalizers](https://github.com/ccocchi/activerecord-normalizations/tree/main/lib/activerecord-normalizations/normalizers) folder to see how included normalizers are done.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

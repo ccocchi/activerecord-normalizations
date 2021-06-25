@@ -5,6 +5,11 @@ class User < ActiveRecord::Base
 end
 
 module ActiveRecord::Normalizations
+  class ReverseNormalizer
+    def initialize(*args); end
+    def call(attr); attr.reverse; end
+  end
+
   class NormalizationsTest < Minitest::Test
     def setup
       User._normalizers.clear
@@ -53,6 +58,23 @@ module ActiveRecord::Normalizations
 
       assert record.save(validate: false)
       assert_equal "Bruce", record.name
+    end
+
+    def test_normalization_is_applied_during_updates
+      User.normalizes :name, spaces: true
+
+      record = User.new
+
+      assert record.update(name: " Bruce")
+      assert_equal "Bruce", record.name
+    end
+
+    def test_custom_normalizer
+      User.normalizes :name, reverse: true
+      record = User.new(name: "Bruce")
+
+      assert record.save
+      assert_equal "ecurB", record.name
     end
   end
 end
