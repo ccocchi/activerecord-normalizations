@@ -33,6 +33,12 @@ module ActiveRecord::Normalizations
       end
     end
 
+    # Avoid sharing normalizers between subclasses
+    def inherited(base) # :nodoc:
+      base._normalizers = _normalizers.dup
+      super
+    end
+
     private
 
     def _parse_normalizer_options(opts)

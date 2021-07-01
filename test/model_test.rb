@@ -76,5 +76,17 @@ module ActiveRecord::Normalizations
       assert record.save
       assert_equal "ecurB", record.name
     end
+
+    def test_normalizers_are_not_shared_between_models
+      klass = Class.new
+      klass.include(ActiveRecord::Normalizations)
+
+      post = Class.new(klass)
+      post.normalizes(:title, spaces: true)
+      comment = Class.new(klass)
+
+      assert post._normalizers.key?('title')
+      assert comment._normalizers.empty?
+    end
   end
 end
