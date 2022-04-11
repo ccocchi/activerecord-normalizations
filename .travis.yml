@@ -6,6 +6,7 @@ env:
   - "RAILS_VERSION=5.2.0"
   - "RAILS_VERSION=6.0.0"
   - "RAILS_VERSION=6.1.0"
+  - "RAILS_VERSION=7.0.0"
 rvm:
   - 2.6.5
   - 2.7.2
@@ -15,3 +16,5 @@ jobs:
   exclude:
   - rvm: 3.0.0
     env: "RAILS_VERSION=5.2.0"
+  - rvm: 2.6.5
+    env: "RAILS_VERSION=7.0.0"

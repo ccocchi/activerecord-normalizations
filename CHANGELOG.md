@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.0
+  * Rails 7 support
+
 ## 1.0.2
   * Extend ActiveRecord during initialization and not after
 
